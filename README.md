@@ -56,7 +56,9 @@ so this is a **Moore** machine.
 | ST1   | Green  | ST2        | 0 | 1 | 0 |
 | ST2   | Yellow | ST0        | 0 | 0 | 1 |
 
-![State diagram](docs/state_diagram.png)
+![State diagram](v2/diagram.png)
+Note: the outputs inside the bubbles are written in **R, Y, G** order
+(e.g. `001` = green, `010` = yellow).
 
 On each arrow, `1` means "time is up, move to the next color" and `0` means
 "stay in the current color".
@@ -104,7 +106,7 @@ The testbench:
    immediately returns the light to red and the counter to 0
 4. Runs another full cycle to confirm red lasts exactly 5 ticks after reset
 
-![Waveform](docs/waveform.png)
+![Waveform](v2/waveform.png)
 
 The cursor at 95 ns shows a rising clock edge where `TM` goes from 8 to 9 and
 the light switches from green to yellow in the same edge.
@@ -117,7 +119,7 @@ set the top entity to `my_t_lmb_tb`, and enable *Open EPWave after run*.
 **GHDL (locally):**
 
 ```bash
-ghdl -a src/traffic_light.vhd tb/traffic_light_tb.vhd
+ghdl -a v2/traffic_light.vhd v2/traffic_light_tb.vhd
 ghdl -e my_t_lmb_tb
 ghdl -r my_t_lmb_tb --vcd=wave.vcd
 gtkwave wave.vcd
