@@ -1,67 +1,74 @@
 --entity
-library IEEE;
-use IEEE.std_logic_1164.all;
-entity my_t_lmb is 
-PORT (
-	CLK,RST : in std_logic;
-    R,G,Y : out std_logic
-) ;
-end my_t_lmb;
+LIBRARY IEEE;
+USE IEEE.std_logic_1164.ALL;
+ENTITY my_t_lmb IS
+    PORT (
+        CLK, RST : IN STD_LOGIC;
+        R, G, Y : OUT STD_LOGIC
+    );
+END my_t_lmb;
 --arch
-architecture my_t_lmb_arch of my_t_lmb is 
-	type state_type  is (ST0,ST1,ST2);
-    signal PS,NS :state_type;
-	signal TM : integer range 0 to 10;
-	
-begin
-	sync_proc:process(RST,CLK)
-    begin
-    	if(RST = '1') then 
-    		PS <= ST0;
-        elsif (rising_edge(CLK)) then
-            PS<= NS;
-         end if;
-	end process sync_proc;
-    --counter 
-    counter_proc : process(CLK,RST)
-    begin
-    	if(RST = '1') then  TM <= 0;
-        elsif(rising_edge(CLK)) then  
-      	if (TM = 10) then
-            TM <= 0;
-        else
-            TM <= TM + 1;
-        end if;
-    end if;
-    end process counter_proc;
-	--comb_proc 
-	comb_proc : process (PS, TM)
-    begin 
-        case PS is
-          WHEN ST0 =>
-              if(TM = 4) then NS <= ST1;
-              else NS <= ST0;
-              end if;
-              R  <= '1';
-              G  <= '0';
-              Y  <= '0';
-            
-        WHEN ST1 =>
-			  if(TM = 8) then NS <= ST2;
-              else NS <= ST1;
-              end if;
-              R  <= '0';
-              G  <= '1';
-              Y  <= '0';
+ARCHITECTURE my_t_lmb_arch OF my_t_lmb IS
+    TYPE state_type IS (ST0, ST1, ST2);
+    SIGNAL PS, NS : state_type;
+    SIGNAL TM : INTEGER RANGE 0 TO 10;
 
-        WHEN ST2 =>
-         	  if(TM = 10) then NS <= ST0;
-              else NS <= ST2;
-              end if;
-              R  <= '0';
-              G  <= '0';
-              Y  <= '1';
-    	end case;
-    end process comb_proc;
-    
-end my_t_lmb_arch;
+BEGIN
+    sync_proc : PROCESS (RST, CLK)
+    BEGIN
+        IF (RST = '1') THEN
+            PS <= ST0;
+        ELSIF (rising_edge(CLK)) THEN
+            PS <= NS;
+        END IF;
+    END PROCESS sync_proc;
+    --counter 
+    counter_proc : PROCESS (CLK, RST)
+    BEGIN
+        IF (RST = '1') THEN
+            TM <= 0;
+        ELSIF (rising_edge(CLK)) THEN
+            IF (TM = 10) THEN
+                TM <= 0;
+            ELSE
+                TM <= TM + 1;
+            END IF;
+        END IF;
+    END PROCESS counter_proc;
+    --comb_proc 
+    comb_proc : PROCESS (PS, TM)
+    BEGIN
+        CASE PS IS
+            WHEN ST0 =>
+                IF (TM = 4) THEN
+                    NS <= ST1;
+                ELSE
+                    NS <= ST0;
+                END IF;
+                R <= '1';
+                G <= '0';
+                Y <= '0';
+
+            WHEN ST1 =>
+                IF (TM = 8) THEN
+                    NS <= ST2;
+                ELSE
+                    NS <= ST1;
+                END IF;
+                R <= '0';
+                G <= '1';
+                Y <= '0';
+
+            WHEN ST2 =>
+                IF (TM = 10) THEN
+                    NS <= ST0;
+                ELSE
+                    NS <= ST2;
+                END IF;
+                R <= '0';
+                G <= '0';
+                Y <= '1';
+        END CASE;
+    END PROCESS comb_proc;
+
+END my_t_lmb_arch;
