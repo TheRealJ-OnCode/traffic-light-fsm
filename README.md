@@ -111,6 +111,25 @@ The testbench:
 The cursor at 95 ns shows a rising clock edge where `TM` goes from 8 to 9 and
 the light switches from green to yellow in the same edge.
 
+### Self-checking testbench
+
+`traffic_light_tb_selfcheck.vhd` checks the light automatically with
+`assert` statements instead of inspecting the waveform by eye. In the
+middle of every clock tick it verifies that exactly one lamp is on and
+that it is the expected color. Three full cycles are checked
+(33 checks in total).
+
+Passing run:
+
+    tb.vhd:47:9:@340ns:(report note): Test finished
+
+Running the same testbench against the buggy version (the leftover
+`NS <= ST0;` line) catches the bug automatically, on every cycle:
+
+    @110ns:(assertion error): Yellow should be on, TM = 10
+    @220ns:(assertion error): Yellow should be on, TM = 10
+    @330ns:(assertion error): Yellow should be on, TM = 10
+
 ### Run it yourself
 
 **EDA Playground:** paste the design and testbench, select VHDL with GHDL,
@@ -136,7 +155,8 @@ gtkwave wave.vcd
   changes on the next clock edge.
 - **Asynchronous vs. synchronous behavior:** reset acts immediately; counting
   and state changes wait for the clock edge.
-
+- **Self-checking testbenches:** using `assert` so the testbench reports
+  errors with the exact time and tick, instead of checking waveforms by eye.
 ### A bug I found through the waveform
 
 In an earlier version, a leftover line from the previous design stayed in the
@@ -160,9 +180,10 @@ fixed both problems.
 
 - [x] **v1** — Basic three-state FSM, one color per clock tick
 - [x] **v2** — Different duration per color using a tick counter
-- [ ] **v3** — Pedestrian button: request a pedestrian light on the next red
+- [x] **v3** — Pedestrian button: request a pedestrian light on the next red
 - [ ] **v4** — Self-checking testbench using `assert`
-              (e.g. "green and pedestrian light are never on at the same time")
+              (basic version done for v2; reference model and
+              pedestrian safety check still to do)
 - [ ] **v5** — Real-time seconds with a clock enable, countdown on a
               7-segment display, and deployment on an FPGA board
 
