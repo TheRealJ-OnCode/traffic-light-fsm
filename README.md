@@ -6,6 +6,8 @@ while studying digital design and FPGA development. The design combines a
 simulation testbench.
 
 ## Overview
+A complete, simulation-verified traffic light controller in VHDL, built in
+three increments while learning digital design.
 
 The light cycles through three colors, each lasting a different number of
 clock ticks:
@@ -334,11 +336,9 @@ fixed both problems.
 - [x] **v1** — Basic three-state FSM, one color per clock tick
 - [x] **v2** — Different duration per color using a tick counter
 - [x] **v3** — Pedestrian button that shortens green, walk light during red
-- [ ] **v4** — Self-checking testbench using `assert`
-      (basic version done for v2; reference model and
-      pedestrian safety check still to do)
-- [ ] **v5** — Real-time seconds with a clock enable, countdown on a
-      7-segment display, and deployment on an FPGA board
+
+The project is complete. Possible extensions: real-time seconds with a clock
+enable, a 7-segment countdown, and deployment on an FPGA board.
 
 ## Tools
 
